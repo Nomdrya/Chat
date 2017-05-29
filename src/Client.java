@@ -11,16 +11,10 @@ import java.util.Scanner;
 public class Client {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 9999);
-        Scanner s = new Scanner(System.in);
-        PrintWriter p = new PrintWriter(socket.getOutputStream());
-        BufferedReader r = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        while (true){
-            String msgrecu = r.readLine();
-            System.out.println(msgrecu);
-            String msg = s.nextLine();
-            p.println(msg);
-            p.flush();
 
-        }
+        Thread ecouteur = new Thread(new Ecouteurmsg(socket));
+        Thread emetteur = new Thread(new Emetteurmsg(socket));
+        ecouteur.start();
+        emetteur.start();
     }
 }

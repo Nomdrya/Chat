@@ -13,15 +13,12 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket ssock = new ServerSocket(9999);
         Socket socket = ssock.accept();
-        Scanner s = new Scanner(System.in);
-        PrintWriter p = new PrintWriter(socket.getOutputStream());
-        BufferedReader r = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        while (true){
-            String msg = s.nextLine();
-            p.println(msg);
-            p.flush();
-            String msgrecu = r.readLine();
-            System.out.println(msgrecu);
-        }
+        System.out.println("Connexion ouverte");
+
+        Thread ecouteur = new Thread(new Ecouteurmsg(socket));
+        Thread emetteur = new Thread(new Emetteurmsg(socket));
+        ecouteur.start();
+        emetteur.start();
+
     }
 }
